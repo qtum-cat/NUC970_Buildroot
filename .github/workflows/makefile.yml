@@ -1,26 +1,31 @@
-name: Makefile CI
+name: Build for Nuvoton NUC972
 
 on:
   push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+    branches:
+      - master
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout Repository
       uses: actions/checkout@v2
-      with:
-        fetch-depth: -1
-        
-    - name: Copy configuration file
-      run: cp configs/nuvoton_nuc972_defconfig .
-      
-    - name: Build Buildroot
+
+    - name: Setup Build Environment
       run: |
-        make nuvoton_nuc972_defconfig
-        make
+        sudo apt-get update
+        sudo apt-get install -y gcc make
+
+    - name: Load Default Configuration
+      run: make nuvoton_nuc972_defconfig
+
+    - name: Run Make
+      run: make
+
+    - name: Archive Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: built-files
+        path: output/images
