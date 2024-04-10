@@ -12,7 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Copy configuration file
+      run: cp configs/nuvoton_nuc972_defconfig .
+      
     - name: Build Buildroot
       run: |
-        make -C configs/ nuvoton_nuc972_defconfig
+        make nuvoton_nuc972_defconfig
         make
