@@ -14,12 +14,12 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
-    - name: Cache dl folder
-      uses: actions/cache@v3
-      with:
-        path: dl
-        key: ${{ runner.os }}-dl-${{ hashFiles('dl/**') }}
-
+    - name: Restore dl folder
+      run: |
+        if [ -d "dl" ]; then
+          mv dl/* ./
+          rm -rf dl
+        fi
     - name: Setup Build Environment
       run: |
         sudo apt-get install -y gcc make
@@ -30,6 +30,12 @@ jobs:
     - name: Run Make
       run: make
 
+    - name: Cache dl folder
+      uses: actions/cache@v3
+      with:
+        path: dl
+        key: ${{ runner.os }}-dl-${{ hashFiles('dl/**') }}
+    
     - name: Archive Artifacts
       uses: actions/upload-artifact@v4
       with:
