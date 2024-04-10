@@ -12,10 +12,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-
-    - name: configure
-      run: make nuvoton_nuc972_defconfig
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
     - name: Install dependencies
-      run: make
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential curl
+
+    - name: Build Buildroot
+      run: |
+        make nuvoton_nuc972_defconfig
+        make
+
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: buildroot-output
+        path: output/images
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: buildroot-output
+        path: buildroot-output
+
+    - name: List output files
+      run: |
+        ls -l buildroot-output
