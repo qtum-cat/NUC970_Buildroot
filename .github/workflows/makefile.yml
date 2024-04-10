@@ -15,4 +15,3 @@ jobs:
     - name: Build Buildroot
       run: |
         make nuvoton_nuc972_defconfig
-        make
