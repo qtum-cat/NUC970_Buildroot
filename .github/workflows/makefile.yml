@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
     - name: Checkout Repository
@@ -15,11 +15,10 @@ jobs:
 
     - name: Setup Build Environment
       run: |
-        sudo apt-get update
         sudo apt-get install -y gcc make
 
     - name: Load Default Configuration
-      run: make help
+      run: make nuvoton_nuc970_defconfig
 
     - name: Run Make
       run: make
