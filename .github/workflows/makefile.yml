@@ -17,8 +17,7 @@ jobs:
     - name: Restore dl folder
       run: |
         if [ -d "dl" ]; then
-          mv dl/* ./
-          rm -rf dl
+          mv -r dl/* ./
         fi
     - name: Setup Build Environment
       run: |
